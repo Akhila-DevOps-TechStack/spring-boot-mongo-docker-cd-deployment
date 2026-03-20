@@ -12,7 +12,7 @@ pipeline {
         stage('Setup KubeConfig') {
             steps {
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding',
-                                  credentialsId: 'aws-eks-cred']]) {
+                                  credentialsId: 'aws-eks-credentials']]) {
                     sh '''
                         aws eks update-kubeconfig --region us-east-1 --name my-cluster
                     '''
@@ -23,7 +23,7 @@ pipeline {
         stage('Deploy to Kubernetes') {
             steps {
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding',
-                                  credentialsId: 'aws-eks-cred']]) {
+                                  credentialsId: 'aws-eks-credentials']]) {
                     sh '''
                         kubectl apply -f springBootMongo.yml --validate=false
                     '''
@@ -34,7 +34,7 @@ pipeline {
         stage('Verify Pods and Services') {
             steps {
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding',
-                                  credentialsId: 'aws-eks-cred']]) {
+                                  credentialsId: 'aws-eks-credentials']]) {
                     sh '''
                         kubectl get pods
                         kubectl get svc
